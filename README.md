@@ -19,8 +19,8 @@
 - 开发工具：Git、PCharm、Jupyter Notebook
 
 ## 项目结构
-、、、text
-ecommerce_user_behavior_analysis/  # 仓库根目录（命名和简历项目名一致）
+```
+Simple-Implementation-Project-for-an-E-commerce-Data-Warehouse/  # 仓库根目录（命名和简历项目名一致）
 ├── data/                  # 数据文件夹（不放原始大文件，只留说明）
 │   └── README.md          # 说明数据来源（Kaggle链接）和格式
 ├── src/                   # 核心源代码（所有.py文件放入此处）
@@ -40,7 +40,7 @@ ecommerce_user_behavior_analysis/  # 仓库根目录（命名和简历项目名�
 ├── requirements.txt       # 依赖包清单（确保可复现）
 ├── README.md              # 项目核心说明（HR第一眼看到）
 └── .gitignore             # 忽略大文件/缓存（仓库更干净）
-、、、
+```
 
 ## 核心亮点（对应简历关键指标）
 ### 1. 数据清洗：准确率99.3%（超预期完成）
@@ -94,3 +94,12 @@ cd Simple-Implementation-Project-for-an-E-commerce-Data-Warehouse
 
 # 安装依赖
 pip install -r requirements.txt
+```
+### 2. 数据准备
+1. 下载数据集：[Kaggle电商用户行为数据](https://www.kaggle.com/datasets/qq2033862865/e-commerce-user-data)
+2. 重命名为 `UserBehavior--1.csv`，放入 `data/` 文件夹
+
+### 3. 一键运行
+```bash
+python main.py
+```
