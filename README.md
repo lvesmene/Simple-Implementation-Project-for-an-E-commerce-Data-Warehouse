@@ -19,7 +19,7 @@
 - 开发工具：Git、PCharm、Jupyter Notebook
 
 ## 项目结构
-、、、text、、、
+、、、text
 ecommerce_user_behavior_analysis/  # 仓库根目录（命名和简历项目名一致）
 ├── data/                  # 数据文件夹（不放原始大文件，只留说明）
 │   └── README.md          # 说明数据来源（Kaggle链接）和格式
@@ -40,7 +40,7 @@ ecommerce_user_behavior_analysis/  # 仓库根目录（命名和简历项目名�
 ├── requirements.txt       # 依赖包清单（确保可复现）
 ├── README.md              # 项目核心说明（HR第一眼看到）
 └── .gitignore             # 忽略大文件/缓存（仓库更干净）
-、、、text、、、
+、、、
 
 ## 核心亮点（对应简历关键指标）
 ### 1. 数据清洗：准确率99.3%（超预期完成）
