@@ -89,8 +89,8 @@ ecommerce_user_behavior_analysis/  # 仓库根目录（命名和简历项目名�
 ### 1. 环境准备
 ```bash
 # 克隆仓库
-git clone https://github.com/vesmene/ecommerce_user_behavior_analysis.git
-cd ecommerce_user_behavior_analysis
+git clone https://github.com/lvesmene/Simple-Implementation-Project-for-an-E-commerce-Data-Warehouse.git
+cd Simple-Implementation-Project-for-an-E-commerce-Data-Warehouse
 
 # 安装依赖
 pip install -r requirements.txt
