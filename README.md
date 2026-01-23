@@ -31,14 +31,14 @@ Simple-Implementation-Project-for-an-E-commerce-Data-Warehouse/  # 仓库根目�
 │   ├── modeling.py        # 建模（逻辑回归/SVM/K-Means）
 │   ├── result_analysis.py # 结果分析（营销策略）
 │   └── config.py          # 配置文件（路径、参数统一管理）
-├── docs/                  # 关键文档（HR重点看）
+├── docs/                  # 关键文档
 │   ├── visualization/     # 可视化图表截图（8类图表全放这）
-│   └── marketing_strategy.md  # 3类精细化营销策略（详细版）
+│   └── marketing_strategy.md  # 3类精细化营销策略
 ├── output/                # 输出文件存放目录
 │   └── README.md          # 说明运行后会生成的文件（报告、图表）
 ├── main.py                # 主程序入口（一键运行全流程）
 ├── requirements.txt       # 依赖包清单（确保可复现）
-├── README.md              # 项目核心说明（HR第一眼看到）
+├── README.md              # 项目核心说明
 └── .gitignore             # 忽略大文件/缓存（仓库更干净）
 ```
 
