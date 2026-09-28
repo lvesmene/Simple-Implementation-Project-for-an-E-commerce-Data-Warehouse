@@ -18,6 +18,8 @@
 # src/config.py
 import os
 
+import matplotlib.pyplot as plt
+
 # 项目根目录（自动获取，无需手动修改）
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
@@ -29,13 +31,17 @@ DOCS_PATH = os.path.join(ROOT_DIR, "docs", "")
 # 创建输出文件夹（不存在则自动创建）
 os.makedirs(OUTPUT_PATH, exist_ok=True)
 
-# 可视化参数（统一风格，图表更专业）
+# 可视化参数（统一风格）
 PLOT_CONFIG = {
     "dpi": 300,
     "bbox_inches": "tight",
     "font_family": "SimHei",  # 解决中文显示问题
     "fontsize": 11
 }
+
+# 全局应用中文字体（导入config即生效，所有绘图模块自动继承）
+plt.rcParams["font.sans-serif"] = [PLOT_CONFIG["font_family"]]
+plt.rcParams["axes.unicode_minus"] = False
 
 # 建模参数（统一管理，方便调优）
 MODEL_CONFIG = {
@@ -45,3 +51,8 @@ MODEL_CONFIG = {
     "lr_max_iter": 1000,
     "svm_max_iter": 5000
 }
+
+output_path = OUTPUT_PATH
+
+# 输出文件统一编码（utf-8-sig 带 BOM：Excel 双击打开不乱码，pandas 通用）
+OUTPUT_ENCODING = "utf-8-sig"

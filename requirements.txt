@@ -1,0 +1,7 @@
+e:\aPythontest\Simple-Implementation-Project-for-an-E-commerce-Data-Warehouse\requirements.txt
+pandas>=1.5
+numpy>=1.23
+matplotlib>=3.6
+seaborn>=0.12
+scipy>=1.9
+scikit-learn>=1.1
