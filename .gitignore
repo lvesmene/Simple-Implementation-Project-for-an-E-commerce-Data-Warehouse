@@ -24,7 +24,4 @@ desktop.ini
 # 注意：必须是 notes/*（不是 notes/），否则下面的 ! 放行会失效
 notes/*
 !notes/指标口径字典.md
-!notes/操作手册_20260923_face修复与旧版归档.md
-!notes/操作手册_20260924_face入口清洗.md
-!notes/操作手册_20260924_Git提交与推送.md
-!notes/方案_20260924_情感对照实验设计.md
+!notes/负面评论抽样复核表.xlsx
