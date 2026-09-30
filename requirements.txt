@@ -1,7 +1,23 @@
-e:\aPythontest\Simple-Implementation-Project-for-an-E-commerce-Data-Warehouse\requirements.txt
-pandas>=1.5
-numpy>=1.23
-matplotlib>=3.6
-seaborn>=0.12
-scipy>=1.9
-scikit-learn>=1.1
+# ---- 数据处理 ----
+pandas>=2.2
+numpy>=1.19
+
+# ---- 可视化 ----
+matplotlib>=3.9
+seaborn>=0.13
+
+# ---- MySQL 数仓连接 ----
+SQLAlchemy>=2.0
+PyMySQL>=1.1
+
+# ---- 文本分析（评论情感） ----
+jieba>=0.42
+snownlp>=0.12
+
+# ---- 机器学习 / 统计（情感对照实验） ----
+scikit-learn>=1.6
+scipy>=1.13
+statsmodels>=0.14
+
+# ---- Excel 读写（复核表 xlsx） ----
+openpyxl>=3.1

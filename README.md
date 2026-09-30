@@ -1,105 +1,96 @@
-# Simple-Implementation-Project-for-an-E-commerce-Data-Warehouse（电商数据仓简易搭建与用户行为分析项目）
-🎯 电商数据仓简易搭建与用户行为分析，基于76万+数据实现购买转化预测与精细化营销策略。
+# Simple-Implementation-Project-for-an-E-commerce-Data-Warehouse
 
-## 项目背景
-在电商行业「流量红利见顶」「转化成本上升」的挑战下，基于 **76万+条用户行为数据**，搭建简易数据仓，实现从数据预处理→特征工程→建模分析→策略落地的全流程，为精细化营销提供数据支撑。
+电商数据仓库搭建与用户行为分析：76 万+ 条用户行为记录入仓，MySQL 五层分层（ODS→DIM→DWD→DWS→ADS），产出 RFM 用户分群、Power BI 交互看板与 1.4 万条评论的情感分析，支撑精细化营销策略。
 
-## 核心目标
-1. 数据清洗：保障数据质量（准确率98%+）
-2. 特征工程：构建「人-货-场」三维特征体系
-3. 精准预测：识别潜在购买用户（逻辑回归AUC0.75+）
-4. 用户分群：区分高/中/低价值用户
-5. 策略落地：提出3类可执行的营销方案
+> 仓库名保留项目初期命名。实现已从"单表分析脚本"演进为分层数仓 + BI + NLP 流水线；旧版单表分析代码归档于 `src/legacy/`，旧版 README 归档于本地 `notes/legacy/`。
+
+## 核心成果
+
+数字口径以 [指标口径字典](notes/指标口径字典.md) 为唯一权威来源，关键指标全部经 Excel 交叉验证（差异 = 0）：
+
+- **用户资产**：全体用户 10,739 / 购买用户 6,110 / 购买总额 1,805,829.50 元 / 客单价 295.55 元
+- **RFM 八分群**：重要价值客户占购买用户 25.99%；锁定高 ROI 挽回群体"重要挽留客户"520 人（人均历史消费 309.18 元，约为一般挽留群体的 3.4 倍）
+- **情感分析**：清洗后评论 13,964 条，负面占 39.5%；负面预测精确率约 95%（20 条人工复核试点，见 [复核表](notes/负面评论抽样复核表.xlsx)）
+- **策略交付**：[电商用户行为分析与精细化营销策略报告](docs/电商用户行为分析与精细化营销策略报告.md)
 
 ## 技术栈
-- 数据处理：Python、Pandas、NumPy（数据清洗/特征工程）
-- 可视化：Matplotlib、Seaborn（8类标准化图表）
-- 机器学习：Scikit-learn（逻辑回归、SVM、K-Means）
-- 数据仓库：维度建模、分层设计（ODS/DWD/DWS/ADS）
-- 开发工具：Git、PCharm、Jupyter Notebook
+
+- **数据仓库**：MySQL 8，五层分层建模，显式 DDL（CREATE TABLE + INSERT...SELECT）
+- **ETL / 分析**：Python（pandas、SQLAlchemy + PyMySQL）
+- **文本分析**：jieba 分词（电商领域自定义词典）+ SnowNLP 情感打分
+- **可视化**：Power BI（DAX 度量值）、Matplotlib / Seaborn
+- **机器学习（在研实验）**：scikit-learn（TF-IDF + 逻辑回归 对照 SnowNLP）、statsmodels（McNemar 检验）
 
 ## 项目结构
+
 ```
-Simple-Implementation-Project-for-an-E-commerce-Data-Warehouse/  # 仓库根目录（命名和简历项目名一致）
-├── data/                  # 数据文件夹（不放原始大文件，只留说明）
-│   └── README.md          # 说明数据来源（Kaggle链接）和格式
-├── src/                   # 核心源代码（所有.py文件放入此处）
-│   ├── __init__.py        # 模块初始化（让导入更规范）
-│   ├── data_loader.py     # 数据加载（补全你缺失的模块）
-│   ├── exploratory_analysis.py  # 探索性分析（生成8类图表）
-│   ├── data_preprocessing.py    # 数据预处理（清洗+特征工程）
-│   ├── modeling.py        # 建模（逻辑回归/SVM/K-Means）
-│   ├── result_analysis.py # 结果分析（营销策略）
-│   └── config.py          # 配置文件（路径、参数统一管理）
-├── docs/                  # 关键文档
-│   ├── visualization/     # 可视化图表截图（8类图表全放这）
-│   └── marketing_strategy.md  # 3类精细化营销策略
-├── output/                # 输出文件存放目录
-│   └── README.md          # 说明运行后会生成的文件（报告、图表）
-├── main.py                # 主程序入口（一键运行全流程）
-├── requirements.txt       # 依赖包清单（确保可复现）
-├── README.md              # 项目核心说明
-└── .gitignore             # 忽略大文件/缓存（仓库更干净）
+├── sql/                          # 数仓分层 DDL（按序执行）
+│   ├── 01_create_dw.sql          # 建库 + ODS/DIM 表
+│   ├── 02_build_dwd.sql          # DWD 明细清洗（只清洗，不聚合）
+│   ├── 03_build_dws.sql          # DWS 轻度聚合（用户 × 日期）
+│   └── 04_build_ads.sql          # ADS 应用层（RFM 分群）
+├── src/
+│   ├── config.py                 # 路径 / 绘图 / 编码全局配置
+│   ├── db_loader.py              # CSV → ODS/DIM 入仓（含职业标签入口清洗）
+│   ├── ads_visualizer.py         # 图11~14：RFM 分布 / 热力图 / 职业占比 / 转化漏斗
+│   ├── sentiment_analyzer.py     # 图15~18：情感分布 / 高频词 / 品类负面率 / 分数直方图
+│   ├── export_for_validation.py  # 导出核对宽表（Excel / Power BI 验证用）
+│   └── legacy/                   # 旧版单表分析脚本（归档，不再维护）
+├── docs/                         # 对外交付文档（策略报告）
+├── notes/
+│   ├── 指标口径字典.md            # 每个指标"怎么算"的唯一权威定义
+│   └── 负面评论抽样复核表.xlsx     # 情感模型人工复核记录
+├── data/                         # 源数据 CSV（不入 git，见 data/README.md）
+├── output/                       # 运行产出（图表 / CSV，不入 git）
+├── requirements.txt
+└── README.md
 ```
 
-## 核心亮点（对应简历关键指标）
-### 1. 数据清洗：准确率99.3%（超预期完成）
-- 缺失值处理：核心字段删除、非核心字段用众数/0/「未知」填充
-- 重复值处理：删除完全重复+「用户-商品-行为-时间戳」复合主键重复
-- 异常值处理：价格99分位数截断、数量限制0-100区间
-- 结果：原始764,833条 → 清洗后757,565条，准确率99.3%（承诺98%+）
+## 快速开始
 
-### 2. 特征工程：7个高价值衍生特征
-| 特征名称 | 含义 | 业务价值 |
-|----------|------|----------|
-| user_goods_count | 用户-商品交互次数 | 反映商品兴趣强度 |
-| is_hot_category | 是否热门分类（Top3） | 关联商品热度与购买意愿 |
-| total_behavior_count | 用户总行为次数 | 衡量用户活跃度 |
-| browse_goods_types | 浏览商品种类数 | 反映兴趣广度 |
-| goods_hot_score | 商品热度分数 | 量化商品受欢迎程度 |
-| is_peak_hour | 是否高峰时段 | 捕捉时间行为规律 |
-| is_weekend | 是否周末 | 区分工作日/周末偏好 |
+### 1. 环境
 
-### 3. 建模分析：逻辑回归AUC0.75（综合性能最优）
-| 模型 | AUC分数 | 准确率 | 召回率 | 核心结论 |
-|------|---------|--------|--------|----------|
-| 逻辑回归 | 0.7551 | 0.6838 | 0.7086 | 精准识别潜在购买用户（首选模型） |
-| SVM | 0.5738 | 0.1258 | 0.9346 | 召回率高但误判多 |
-| K-Means | - | - | - | 3类用户分群（高/中/低价值） |
-
-### 4. 可视化产出：8类标准化图表（截图见 docs/visualization/）
-| 图表编号 | 图表名称 | 核心结论 |
-|----------|----------|----------|
-| 图1 | 用户行为分布饼图 | 浏览占89.8%，购买仅1.9%（转化潜力大） |
-| 图2 | 活跃时段分布 | 0:00-1:00流量高峰，19:00-22:00转化最优 |
-| 图3 | 热门分类Top10 | 4756105/4145813/2355072为核心品类 |
-| 图4 | 性别-行为热力图 | 女性加购率5.88% > 男性5.46% |
-| 图5 | 特征重要性排名 | 性别、周末、高峰时段是Top3影响因素 |
-| 图6 | 模型性能对比 | 逻辑回归综合优于SVM |
-| 图7 | 用户分群转化率 | 高价值用户转化率2.42%（低价值0.59%） |
-| 图8 | 日购买转化率趋势 | 短期预测1.98%（提升3.1%） |
-
-### 5. 业务成果：3类可落地营销策略
-详细方案见 → [marketing_strategy.md](docs/marketing_strategy.md)
-1. **高价值用户运营**：为集群1用户（64.2%）搭建专属会员体系，推送热门商品+限时折扣
-2. **时段营销优化**：夜间发优惠券（刺激即时购买）、晚间直播带货（强化决策）
-3. **商品布局调整**：首页设热门分类专区，浏览3次商品触发「加购立减」
-
-## 快速开始（可快速验证）
-### 1. 环境准备
 ```bash
-# 克隆仓库
-git clone https://github.com/lvesmene/Simple-Implementation-Project-for-an-E-commerce-Data-Warehouse.git
-cd Simple-Implementation-Project-for-an-E-commerce-Data-Warehouse
-
-# 安装依赖
-pip install -r requirements.txt
+conda create -n my_py39_env python=3.9
+conda activate my_py39_env
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
+
 ### 2. 数据准备
-1. 下载数据集：[Kaggle电商用户行为数据](https://www.kaggle.com/datasets/qq2033862865/e-commerce-user-data)
-2. 重命名为 `UserBehavior--1.csv`，放入 `data/` 文件夹
 
-### 3. 一键运行
-```bash
-python main.py
+将 4 个 CSV 放入 `data/`：
+
+| 文件 | 内容 |
+|---|---|
+| `UserBehavior--1.csv` | 用户行为明细（约 76 万行） |
+| `user_comments.csv` | 用户评论 |
+| `category_mapping.csv` | 品类映射 |
+| `user_face.csv` | 用户画像（职业标签） |
+
+### 3. 建库与密码配置
+
+1. MySQL Workbench 执行 `sql/01_create_dw.sql`
+2. 配置数据库密码环境变量（避免密码硬编码进 git）：
+
+```powershell
+setx MYSQL_PASSWORD "你的密码"      # 永久生效，需新开终端
+if($env:MYSQL_PASSWORD) {"已设置"}  # 新开终端后验证（不显示密码本身）
 ```
+
+### 4. 流水线执行
+
+```bash
+python src/db_loader.py               # CSV → ODS/DIM 入仓
+# MySQL Workbench 依次执行 02 → 03 → 04（DWD → DWS → ADS）
+python src/ads_visualizer.py          # 图11~14
+python src/sentiment_analyzer.py      # 图15~18 + 负面评论清单
+python src/export_for_validation.py   # 导出核对宽表
+```
+
+### 5. Power BI 看板
+
+连接 MySQL `ecommerce_dw` 库，建模关系 `dim_user_profile (1) → (*) ads_rfm_segments`；KPI 与图表的 DAX 度量值口径逐条见 [指标口径字典](notes/指标口径字典.md)。
+
+## 在研
+
+情感模型选型对照实验（TF-IDF + 逻辑回归 vs SnowNLP，120 条三分层人工金标）：预注册决策线为——监督模型负面类加权 F1 提升 ≥ 5 个百分点且 McNemar 检验 p < 0.05，方建议更换现行口径；否则维持 SnowNLP 阈值法。实验结论不回溯修改已交付报告与图表。
