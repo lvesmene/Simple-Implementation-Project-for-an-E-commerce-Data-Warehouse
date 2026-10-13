@@ -13,6 +13,7 @@
     python src/sentiment_analyzer.py
 """
 import os
+import re
 import sys
 from collections import Counter
 
@@ -56,6 +57,31 @@ STOPWORDS = {
 # ============================================================
 # Step 1: 读数 + 清洗（对账思维：每步打印行数漏斗）
 # ============================================================
+def normalize_text(t):
+    r"""文本规范化：去掉所有非词字符(空白+标点)，用于识别"实质相同"的评论。
+    例："好评!" / "好评." / "好评" → 都是"好评"
+    """
+    return re.sub(r"\W", "", str(t))
+
+def check_template_texts(df, threshold=100):
+    """模板化文本排查：源表无 comment_type 标志位，只能靠频次暴露可疑项。
+
+    高频文本（>threshold 次）几乎不可能是自然表达，多为"默认好评"等模板；
+    命中数量可能很大，故不打印、统一导出 CSV 供人工裁决
+    （默认好评则剔除，真实高频表达如"不错"则保留）。
+    """
+    vc = df["norm"].value_counts()
+    suspect = vc[vc > threshold]
+    sample = df.drop_duplicates("norm").set_index("norm")["comment"]
+    table = pd.DataFrame({
+        "出现次数": suspect.values,
+        "示例评论": sample.reindex(suspect.index).values,
+    }, index=suspect.index)
+    table.index.name = "norm"
+    path = f"{output_path}模板化文本排查表.csv"
+    table.to_csv(path, index=True, encoding=OUTPUT_ENCODING)
+    print(f"  高频文本(>{threshold}次)：{len(suspect)} 条 → 已导出 {path}（人工裁决）")
+
 def load_and_clean(engine):
     print("\n--- Step 1: 读取 ods_comment 并清洗 ---")
     sql = "SELECT user_id, goods_id, category_id, comment FROM ods_comment"
@@ -67,12 +93,16 @@ def load_and_clean(engine):
     print(f"  去空评论：{len(df)} 行")
 
     before = len(df)
-    df = df.drop_duplicates(subset=["user_id", "goods_id"], keep="first")
-    print(f"  同人同商品去重：{before} → {len(df)} 行")
-
-    before = len(df)
     df = df[df["comment"].str.len() >= 5]
     print(f"  过滤超短文本(<5字)：{before} → {len(df)} 行")
+
+    # 真重复 = 同一用户 + 同一商品 + 同一文本；不同用户写同样的字是独立意见，不删
+    df["norm"] = df["comment"].map(normalize_text)
+    check_template_texts(df)
+
+    before = len(df)
+    df = df.drop_duplicates(subset=["user_id", "goods_id", "norm"], keep="first")
+    print(f"  同人同商品同文本去重：{before} → {len(df)} 行")
     return df.reset_index(drop=True)
 
 # ============================================================
@@ -254,10 +284,11 @@ def export_sample_for_review(df):
         ["score", "comment"]
     ].copy()
     sample["comment"] = sample["comment"].str.slice(0, 80)
-    sample["review"] = ""  # 人工填入：真负面 / 误判 / 模糊
+    # 标准：以整体主导情感判定，褒贬并存时看核心诉求；"真负面"=模型命中，其余均为误判
+    sample["review"] = ""  # 真负面 / 误判_中性 / 误判_正面 / 模糊(剔除,不计入精确率)
     sample.to_csv(f"{output_path}负面评论抽样复核表.csv", index=False, encoding=OUTPUT_ENCODING)
     print(f"  已导出 {len(sample)} 条待复核样本 → 负面评论抽样复核表.csv")
-    print("  复核完成后填入 review 列：真负面 / 误判 / 模糊")
+    print("  复核完成后填入 review 列：真负面 / 误判_中性 / 误判_正面 / 模糊(剔除不计入)")
 
 
 def main():

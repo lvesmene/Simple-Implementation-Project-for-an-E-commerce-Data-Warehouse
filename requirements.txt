@@ -1,3 +1,7 @@
+# Python >= 3.9（推荐运行环境：conda 环境 my_py39_env）
+# 安装：pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+# 说明：docx 解包/打包等文档工具链脚本需 Python 3.10+（本机用 base 3.12 运行），与数仓运行环境分离
+
 # ---- 数据处理 ----
 pandas>=2.2
 numpy>=1.19
@@ -14,10 +18,10 @@ PyMySQL>=1.1
 jieba>=0.42
 snownlp>=0.12
 
-# ---- 机器学习 / 统计（情感对照实验） ----
-scikit-learn>=1.6
+# ---- 机器学习 / 统计（情感对照实验；scikit-learn 锁 <2 防大版本 API 破坏） ----
+scikit-learn>=1.6,<2
 scipy>=1.13
 statsmodels>=0.14
 
-# ---- Excel 读写（复核表 xlsx） ----
+# ---- Excel 读写（金标标注表 / 复核表 xlsx） ----
 openpyxl>=3.1

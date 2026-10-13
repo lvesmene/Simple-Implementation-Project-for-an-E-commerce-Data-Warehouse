@@ -41,7 +41,7 @@ PLOT_CONFIG = {
 
 # 全局应用中文字体（导入config即生效，所有绘图模块自动继承）
 plt.rcParams["font.sans-serif"] = [PLOT_CONFIG["font_family"]]
-plt.rcParams["axes.unicode_minus"] = False
+plt.rcParams["axes.unicode_minus"] = False  # SimHei 没有 Unicode 负号（U+2212）的字形，不关它，负数刻度会显示成方框。
 
 # 建模参数（统一管理，方便调优）
 MODEL_CONFIG = {
