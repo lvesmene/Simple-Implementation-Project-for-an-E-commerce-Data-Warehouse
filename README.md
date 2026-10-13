@@ -1,4 +1,4 @@
-# Simple-Implementation-Project-for-an-E-commerce-Data-Warehouse
+# ecommerce-user-behavior-dw
 
 电商数据仓库搭建与用户行为分析：76 万+ 条用户行为记录入仓，MySQL 五层分层（ODS→DIM→DWD→DWS→ADS），产出 RFM 用户分群、Power BI 交互看板与 1.45 万条评论的情感分析（120 条人工金标验证，负面精确率 92.3%），支撑精细化营销策略。
 
