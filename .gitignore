@@ -4,7 +4,6 @@ data/*.csv
 
 # ---- 运行产出：任何环境都能重新生成 ----
 output/
-pbix/
 
 # ---- srctool:脚本工具,不上传 ----
 srctool/

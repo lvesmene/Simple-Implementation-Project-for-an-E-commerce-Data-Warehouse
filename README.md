@@ -46,6 +46,8 @@
 │   └── 标注表_120条_filled.xlsx   # 情感对照实验人工金标（120 条三带分层）
 ├── data/                         # 源数据 CSV（不入 git，见 data/README.md）
 ├── output/                       # 运行产出（图表 / CSV，不入 git）
+├── pbix/
+│   └──ecommerce_dw_picture.pbix  
 ├── requirements.txt
 └── README.md
 ```
@@ -96,7 +98,9 @@ python src/export_for_validation.py   # 导出核对宽表
 
 ### 5. Power BI 看板
 
-连接 MySQL `ecommerce_dw` 库，建模关系 `dim_user_profile (1) → (*) ads_rfm_segments`；KPI 与图表的 DAX 度量值口径逐条见 [指标口径字典](notes/指标口径字典.md)。
+看板文件在`pbix/` （含数据快照，clone 后可直接打开查看全部视图与 DAX）。
+如需刷新数据：先按上文步骤搭建 MySQL 数仓，再在 Power BI 数据源设置中把 CSV 路径重指到本地`output/` 、数据库连接改为你本机。
+如要自行搭建:"连接 MySQL `ecommerce_dw` 库，建模关系 `dim_user_profile (1) → (*) ads_rfm_segments`；KPI 与图表的 DAX 度量值口径逐条见 [指标口径字典](notes/指标口径字典.md)。
 
 ## 情感模型选型实验
 
