@@ -6,6 +6,9 @@ data/*.csv
 output/
 pbix/
 
+# ---- srctool:脚本工具,不上传 ----
+srctool/
+
 # ---- Python ----
 __pycache__/
 *.py[cod]

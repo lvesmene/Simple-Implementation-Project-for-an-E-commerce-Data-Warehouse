@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 """
 sentiment_benchmark:TF-IDF+LR 对照 SnowNLP (金标 120 条)
-主轨:全量银标(13,964,SnowNLP 伪标签)训练LR → 金标评估
+主轨:银标(剔除金标防泄漏,14,433 条,SnowNLP 伪标签)训练LR → 金标折外评估
 辅轨: 120 金标 5 折 CV (报 mean + std)
 运行: conda activate my_py39_env 
      python src/sentiment_benchmark.py
@@ -263,7 +263,7 @@ def main():
     summary.to_csv(os.path.join(BENCH_DIR, "对照结果.csv"), index=False, encoding=OUTPUT_ENCODING)
     print("\n", summary.round(4).to_string(index=False))
 
-    # --- 预测册决策线(限定语：res_lr 来自主轨样本内预测，金标⊂训练集，delta 偏乐观，报告必须注明) ---
+    # --- 决策线(预注册：加权 F1 提升≥5pp 且 p<0.05 才换口径；res_lr 为金标剔除后的折外预测，无泄漏) ---
     delta = (res_lr["F1_w"] - res_snow["F1_w"]) * 100
     print(f"\n负面加权 F1 相差: {delta:+.2f} pp | McNemar p={p_mcnemar:.4f}")
     print("决策线判定:", "建议更换口径" if (delta >= 5 and p_mcnemar < 0.05)
