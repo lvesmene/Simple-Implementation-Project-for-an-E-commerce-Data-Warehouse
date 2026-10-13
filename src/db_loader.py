@@ -13,6 +13,7 @@ import sys
 import time
 
 import re
+from urllib.parse import quote_plus
 
 import pandas as pd
 from sqlalchemy import create_engine, text
@@ -78,7 +79,7 @@ DATA_SOURCES = [
 def get_engine():
     """创建 SQLAlchemy 引擎（pymysql 驱动）"""
     url = (
-        f"mysql+pymysql://{DB_CONFIG['user']}:{DB_CONFIG['password']}"
+        f"mysql+pymysql://{DB_CONFIG['user']}:{quote_plus(DB_CONFIG['password'])}"
         f"@{DB_CONFIG['host']}:{DB_CONFIG['port']}/{DB_CONFIG['database']}"
         f"?charset={DB_CONFIG['charset']}"
     )

@@ -1,21 +1,5 @@
 # # -*- coding: utf-8 -*-
 # """配置文件：存储全局参数和路径"""
-# import matplotlib.pyplot as plt
-# import os
-
-# # 图表配置
-# plt.rcParams['font.sans-serif'] = ['SimHei']  # 中文支持
-# plt.rcParams['axes.unicode_minus'] = False  # 负号显示
-# plt.rcParams['figure.figsize'] = (12, 8)  # 图表默认大小
-# plt.rcParams['font.size'] = 10  # 字体大小
-
-# # 路径配置
-# output_path = "电商用户行为分析结果/"
-# # 自动创建输出目录（新增）
-# os.makedirs(output_path, exist_ok=True)
-
-
-# src/config.py
 import os
 
 import matplotlib.pyplot as plt
