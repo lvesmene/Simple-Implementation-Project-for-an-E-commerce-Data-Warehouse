@@ -2,11 +2,11 @@
 
 电商数据仓库搭建与用户行为分析：76 万+ 条用户行为记录入仓，MySQL 五层分层（ODS→DIM→DWD→DWS→ADS），产出 RFM 用户分群、Power BI 交互看板与 1.45 万条评论的情感分析（120 条人工金标验证，负面精确率 92.3%），支撑精细化营销策略。
 
-> 仓库名保留项目初期命名。实现已从"单表分析脚本"演进为分层数仓 + BI + NLP 流水线；旧版单表分析代码归档于 `src/legacy/`，旧版 README 归档于本地 `notes/legacy/`。
+> 仓库名保留项目初期命名。实现已从"单表分析脚本"演进为分层数仓 + BI + NLP 流水线；旧版单表分析代码归档于 `src/legacy/`，旧版 README 归档于本地 `notes/archive/legacy/`。
 
 ## 核心成果
 
-数字口径以 [指标口径字典](notes/指标口径字典.md) 为唯一权威来源，关键指标全部经 Excel 交叉验证（差异 = 0）：
+数字口径以 [指标口径字典](notes/reference/指标口径字典.md) 为唯一权威来源，关键指标全部经 Excel 交叉验证（差异 = 0）：
 
 - **用户资产**：全体用户 10,739 / 购买用户 6,110 / 购买总额 1,805,829.50 元 / 客单价 295.55 元
 - **RFM 八分群**：重要价值客户占购买用户 25.99%；锁定高 ROI 挽回群体"重要挽留客户"520 人（人均历史消费 309.18 元，约为一般挽留群体的 3.4 倍）
@@ -100,7 +100,7 @@ python src/export_for_validation.py   # 导出核对宽表
 
 看板文件在`pbix/` （含数据快照，clone 后可直接打开查看全部视图与 DAX）。
 如需刷新数据：先按上文步骤搭建 MySQL 数仓，再在 Power BI 数据源设置中把 CSV 路径重指到本地`output/` 、数据库连接改为你本机。
-如要自行搭建:"连接 MySQL `ecommerce_dw` 库，建模关系 `dim_user_profile (1) → (*) ads_rfm_segments`；KPI 与图表的 DAX 度量值口径逐条见 [指标口径字典](notes/指标口径字典.md)。
+如要自行搭建:"连接 MySQL `ecommerce_dw` 库，建模关系 `dim_user_profile (1) → (*) ads_rfm_segments`；KPI 与图表的 DAX 度量值口径逐条见 [指标口径字典](notes/reference/指标口径字典.md)。
 
 ## 情感模型选型实验
 

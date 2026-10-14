@@ -22,10 +22,17 @@ __pycache__/
 Thumbs.db
 desktop.ini
 
-# ---- 笔记：只上传交付物文档，其余（日志/学习总结/教程/草稿/简历）不上传 ----
-# 注意：必须是 notes/*（不是 notes/），否则下面的 ! 放行会失效
+# ---- 笔记：只上传交付物文档，其余（知识库/操作指南/日志/学习总结/教程/草稿/简历）不上传 ----
+# 注意：必须是 notes/*（不是 notes/），否则下面的 ! 放行会失效；
+# 白名单放行子目录内文件时需逐级放行：目录 → 子目录 → 文件（与 pbix/* 同理）
 notes/*
-!notes/指标口径字典.md
+!notes/reference/
+notes/reference/*
+!notes/reference/指标口径字典.md
 !notes/负面评论抽样复核表.xlsx
-!notes/legacy/
+!notes/archive/
+notes/archive/*
+!notes/archive/legacy/
+notes/archive/legacy/*
+!notes/archive/legacy/README_v1_单表分析版.md
 !notes/标注表_120条_filled.xlsx
